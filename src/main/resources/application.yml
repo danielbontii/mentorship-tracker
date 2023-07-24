@@ -1,0 +1,27 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  datasource:
+    url: ${dbUrl}
+    username: ${dbUsername}
+    password: ${dbPassword}
+    driver-class-name: org.postgresql.Driver
+
+  main:
+    banner-mode: off
+
+
+logging:
+  level:
+    org.hibernate.SQL: trace
+    org.hibernate.orm.jdbc.bind: trace
+
+app:
+  admin:
+    email: ${adminEmail}
+    username: ${adminUsername}
+    password: ${adminPassword}
