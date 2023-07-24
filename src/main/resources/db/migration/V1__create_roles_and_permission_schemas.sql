@@ -11,11 +11,11 @@ CREATE TABLE roles
     description     VARCHAR,
 
     created_by      UUID,
-    created_at      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_on      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_updated_by UUID,
-    last_updated_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_updated_on TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_by      UUID,
-    deleted_at      TIMESTAMP
+    deleted_on      TIMESTAMP
 
 
 );
@@ -30,13 +30,14 @@ CREATE TABLE permissions
 
     id              UUID PRIMARY KEY        DEFAULT uuid_generate_v4(),
     name            VARCHAR UNIQUE NOT NULL,
+    description     VARCHAR,
 
     created_by      UUID,
-    created_at      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_on      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_updated_by UUID,
-    last_updated_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_updated_on TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_by      UUID,
-    deleted_at      TIMESTAMP
+    deleted_on      TIMESTAMP
 
 );
 
