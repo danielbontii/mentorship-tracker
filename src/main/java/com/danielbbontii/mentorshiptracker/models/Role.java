@@ -41,4 +41,12 @@ public class Role extends BaseEntity {
     public int hashCode() {
         return Objects.hash(name, description);
     }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

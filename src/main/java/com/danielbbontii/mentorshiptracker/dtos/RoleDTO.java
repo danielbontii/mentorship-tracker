@@ -11,9 +11,9 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class RoleDTO {
 
     @NotBlank(message = "role name must not be empty")

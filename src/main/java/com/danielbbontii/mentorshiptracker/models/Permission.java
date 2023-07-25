@@ -26,4 +26,12 @@ public class Permission extends BaseEntity {
 
     @ManyToMany(mappedBy = "permissions")
     private Set<Role> roles;
+
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
