@@ -28,3 +28,12 @@ CREATE TABLE user_profiles
 
 ALTER TABLE users
     ADD CONSTRAINT users_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES user_profiles (id);
+
+ALTER TABLE users
+    ADD CONSTRAINT users_created_by_fkey FOREIGN KEY (created_by) REFERENCES users (id);
+
+ALTER TABLE users
+    ADD CONSTRAINT users_last_updated_by_fkey FOREIGN KEY (last_updated_by) REFERENCES users (id);
+
+ALTER TABLE users
+    ADD CONSTRAINT users_deleted_by_fkey FOREIGN KEY (deleted_by) REFERENCES users (id);
