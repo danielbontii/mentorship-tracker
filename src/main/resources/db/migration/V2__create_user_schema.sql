@@ -27,7 +27,8 @@ CREATE TABLE user_profiles
 );
 
 ALTER TABLE users
-    ADD CONSTRAINT users_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES user_profiles (id);
+    ADD CONSTRAINT users_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES user_profiles (id)
+    ON DELETE CASCADE;
 
 ALTER TABLE users
     ADD CONSTRAINT users_created_by_fkey FOREIGN KEY (created_by) REFERENCES users (id);
