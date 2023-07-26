@@ -7,12 +7,14 @@ import com.danielbbontii.mentorshiptracker.repositories.RoleRepository;
 import com.danielbbontii.mentorshiptracker.services.RoleService;
 import com.danielbbontii.mentorshiptracker.services.SeederService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
 
 @Service
+@Qualifier("role and permissions")
 @RequiredArgsConstructor
 public class RoleAndPermissionSeederServiceImpl implements SeederService {
 

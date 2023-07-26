@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 

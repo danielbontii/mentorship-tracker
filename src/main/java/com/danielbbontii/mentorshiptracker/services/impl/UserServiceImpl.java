@@ -9,6 +9,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseDTO create(UserCreationDTO userCreationDTO, Authentication authentication) {
 
+        //validate role
         //create new user
         //validate dob if user type is not admin
         //set profile user type is not admin
