@@ -1,6 +1,6 @@
 package com.danielbbontii.mentorshiptracker.services.impl;
 
-import com.danielbbontii.mentorshiptracker.dtos.RoleDTO;
+import com.danielbbontii.mentorshiptracker.dtos.RoleCreationDTO;
 import com.danielbbontii.mentorshiptracker.models.Permission;
 import com.danielbbontii.mentorshiptracker.repositories.PermissionRepository;
 import com.danielbbontii.mentorshiptracker.repositories.RoleRepository;
@@ -36,46 +36,46 @@ public class RoleAndPermissionSeederServiceImpl implements SeederService {
 
         if (!isMentorshipManagerRoleSeeded) {
 
-            RoleDTO mentorshipManagerRoleDTO =
-                    new RoleDTO(MENTORSHIP_MANAGE_ROLE, "Perform mentorship associated CRUD actions", new HashSet<>());
+            RoleCreationDTO mentorshipManagerRoleCreationDTO =
+                    new RoleCreationDTO(MENTORSHIP_MANAGE_ROLE, "Perform mentorship associated CRUD actions", new HashSet<>());
 
-            addManageMentorShipPermission(mentorshipManagerRoleDTO);
-            addViewMentorshipPermission(mentorshipManagerRoleDTO);
+            addManageMentorShipPermission(mentorshipManagerRoleCreationDTO);
+            addViewMentorshipPermission(mentorshipManagerRoleCreationDTO);
 
-            roleService.create(mentorshipManagerRoleDTO, null);
+            roleService.create(mentorshipManagerRoleCreationDTO, null);
 
         }
     }
 
-    private void addViewMentorshipPermission(RoleDTO mentorshipManagerRoleDTO) {
+    private void addViewMentorshipPermission(RoleCreationDTO mentorshipManagerRoleCreationDTO) {
         Optional<Permission> viewMentorshipOptional
                 = permissionRepository.findByNameEqualsIgnoreCase(VIEW_MENTORSHIP_PERMISSION);
 
         if (viewMentorshipOptional.isPresent()) {
-            mentorshipManagerRoleDTO.getPermissions().add(viewMentorshipOptional.get());
+            mentorshipManagerRoleCreationDTO.getPermissions().add(viewMentorshipOptional.get());
         } else {
             Permission viewMentorship = new Permission(
                     VIEW_MENTORSHIP_PERMISSION,
                     "view mentorship only",
                     null
             );
-            mentorshipManagerRoleDTO.getPermissions().add(viewMentorship);
+            mentorshipManagerRoleCreationDTO.getPermissions().add(viewMentorship);
         }
     }
 
-    private void addManageMentorShipPermission(RoleDTO mentorshipManagerRoleDTO) {
+    private void addManageMentorShipPermission(RoleCreationDTO mentorshipManagerRoleCreationDTO) {
         Optional<Permission> manageMentorshipOptional =
                 permissionRepository.findByNameEqualsIgnoreCase(MANAGE_MENTORSHIP_PERMISSION);
 
         if (manageMentorshipOptional.isPresent()) {
-            mentorshipManagerRoleDTO.getPermissions().add(manageMentorshipOptional.get());
+            mentorshipManagerRoleCreationDTO.getPermissions().add(manageMentorshipOptional.get());
         } else {
             Permission manageMentorship = new Permission(
                     MANAGE_MENTORSHIP_PERMISSION,
                     "create, view, update and delete on mentorship(advisors and advisees)",
                     null
             );
-            mentorshipManagerRoleDTO.getPermissions().add(manageMentorship);
+            mentorshipManagerRoleCreationDTO.getPermissions().add(manageMentorship);
         }
 
     }
@@ -84,8 +84,8 @@ public class RoleAndPermissionSeederServiceImpl implements SeederService {
         boolean isAdminRoleSeeded = roleRepository.existsByNameIgnoreCase(ADMIN_ROLE);
 
         if (!isAdminRoleSeeded) {
-            RoleDTO adminRoleDTO = new RoleDTO(ADMIN_ROLE, "Perform all actions", null);
-            roleService.create(adminRoleDTO, null);
+            RoleCreationDTO adminRoleCreationDTO = new RoleCreationDTO(ADMIN_ROLE, "Perform all actions", null);
+            roleService.create(adminRoleCreationDTO, null);
         }
     }
 }

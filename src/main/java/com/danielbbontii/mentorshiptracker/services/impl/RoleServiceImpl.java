@@ -1,7 +1,7 @@
 package com.danielbbontii.mentorshiptracker.services.impl;
 
 import com.danielbbontii.mentorshiptracker.dtos.ResponseDTO;
-import com.danielbbontii.mentorshiptracker.dtos.RoleDTO;
+import com.danielbbontii.mentorshiptracker.dtos.RoleCreationDTO;
 import com.danielbbontii.mentorshiptracker.exceptions.EntityAlreadyExistsException;
 import com.danielbbontii.mentorshiptracker.models.Role;
 import com.danielbbontii.mentorshiptracker.repositories.RoleRepository;
@@ -17,22 +17,22 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public ResponseDTO create(RoleDTO roleDTO, Authentication authentication) {
+    public ResponseDTO create(RoleCreationDTO roleCreationDTO, Authentication authentication) {
 
-        boolean isRoleAlreadyExistent = roleRepository.existsByNameIgnoreCase(roleDTO.getName());
+        boolean isRoleAlreadyExistent = roleRepository.existsByNameIgnoreCase(roleCreationDTO.getName());
 
         if (isRoleAlreadyExistent) {
-            throw new EntityAlreadyExistsException("role with name %s already exists".formatted(roleDTO.getName()));
+            throw new EntityAlreadyExistsException("role with name %s already exists".formatted(roleCreationDTO.getName()));
         }
 
         Role roleToCreate = new Role();
-        roleToCreate.setName(roleDTO.getName().trim());
+        roleToCreate.setName(roleCreationDTO.getName().trim());
 
-        if (roleDTO.getDescription() != null) {
-            roleToCreate.setDescription(roleDTO.getDescription().trim());
+        if (roleCreationDTO.getDescription() != null) {
+            roleToCreate.setDescription(roleCreationDTO.getDescription().trim());
         }
-        if (roleDTO.getPermissions() != null && !roleDTO.getPermissions().isEmpty()) {
-            roleToCreate.setPermissions(roleDTO.getPermissions());
+        if (roleCreationDTO.getPermissions() != null && !roleCreationDTO.getPermissions().isEmpty()) {
+            roleToCreate.setPermissions(roleCreationDTO.getPermissions());
         }
         /*
          * Todo:

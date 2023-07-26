@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
+public class RoleCreationDTO {
 
     @NotBlank(message = "role name must not be empty")
     private String name;
@@ -27,8 +27,8 @@ public class RoleDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RoleDTO roleDTO = (RoleDTO) o;
-        return Objects.equals(name, roleDTO.name) && Objects.equals(description, roleDTO.description);
+        RoleCreationDTO roleCreationDTO = (RoleCreationDTO) o;
+        return Objects.equals(name, roleCreationDTO.name) && Objects.equals(description, roleCreationDTO.description);
     }
 
     @Override
