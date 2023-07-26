@@ -8,7 +8,7 @@ CREATE TABLE users
     password        VARCHAR        NOT NULL,
     role_id         UUID REFERENCES roles (id),
     profile_id      UUID,
-    userType        INTEGER        NOT NULL,
+    user_type       INTEGER        NOT NULL,
 
     created_by      UUID,
     created_on      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -28,7 +28,7 @@ CREATE TABLE user_profiles
 
 ALTER TABLE users
     ADD CONSTRAINT users_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES user_profiles (id)
-    ON DELETE CASCADE;
+        ON DELETE CASCADE;
 
 ALTER TABLE users
     ADD CONSTRAINT users_created_by_fkey FOREIGN KEY (created_by) REFERENCES users (id);

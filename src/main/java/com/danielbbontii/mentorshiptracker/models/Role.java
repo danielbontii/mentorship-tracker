@@ -11,10 +11,10 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Entity
 @Table(name = "roles")
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class Role extends BaseEntity {
 
     @Column(unique = true, nullable = false)

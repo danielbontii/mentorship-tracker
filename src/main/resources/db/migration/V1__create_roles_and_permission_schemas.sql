@@ -1,10 +1,5 @@
 CREATE TABLE roles
 (
-    /*
-        Todo:
-        1. Do not allow nulls for creation and updating timestamps
-        2. Reference users table for timestamps when users table is ready
-    */
 
     id              UUID PRIMARY KEY        DEFAULT uuid_generate_v4(),
     name            VARCHAR UNIQUE NOT NULL,
@@ -22,11 +17,6 @@ CREATE TABLE roles
 
 CREATE TABLE permissions
 (
-    /*
-        Todo:
-        1. Do not allow nulls for creation and updating timestamps
-        2. Reference users table for timestamps when users table is ready
-    */
 
     id              UUID PRIMARY KEY        DEFAULT uuid_generate_v4(),
     name            VARCHAR UNIQUE NOT NULL,
