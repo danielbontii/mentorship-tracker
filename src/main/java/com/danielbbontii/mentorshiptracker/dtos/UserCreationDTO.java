@@ -28,6 +28,9 @@ public class UserCreationDTO {
             message = "please provide a valid email")
     private String email;
 
+    //Todo: add strong password validation
+    private String password;
+
     @NotBlank(message = "username must not be empty")
     private String username;
 

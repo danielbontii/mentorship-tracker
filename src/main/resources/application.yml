@@ -19,9 +19,25 @@ logging:
   level:
     org.hibernate.SQL: trace
     org.hibernate.orm.jdbc.bind: trace
+    springframework:
+      security: TRACE
 
 app:
   admin:
     email: ${adminEmail}
     username: ${adminUsername}
     password: ${adminPassword}
+
+  jwt:
+    secret: ${jwtSecret}
+    expiration: ${jwtExpiration}
+
+
+#server:
+#  servlet:
+#    context-path: /api
+
+springdoc:
+  enable-native-support: true
+  swagger-ui:
+    path: /swagger-ui
