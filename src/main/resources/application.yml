@@ -17,10 +17,9 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: trace
-    org.hibernate.orm.jdbc.bind: trace
-    springframework:
-      security: TRACE
+    org.hibernate.SQL: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.security: TRACE
 
 app:
   admin:

@@ -20,6 +20,11 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private static final String MESSAGE = "message";
+    private static final String TITLE = "title";
+    private static final String STATUS = "status";
+    private static final String ERROR = "error";
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(@NotNull MethodArgumentNotValidException ex,
                                                                   @NotNull HttpHeaders headers,
@@ -29,22 +34,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .stream()
                 .map(violation -> {
                     Map<String, Object> violationDetails = new HashMap<>();
-                    violationDetails.put("message", violation.getDefaultMessage());
-                    violationDetails.put("title", HttpStatus.BAD_REQUEST);
-                    violationDetails.put("status", HttpStatus.BAD_REQUEST.value());
+                    violationDetails.put(MESSAGE, violation.getDefaultMessage());
+                    violationDetails.put(TITLE, HttpStatus.BAD_REQUEST);
+                    violationDetails.put(STATUS, HttpStatus.BAD_REQUEST.value());
                     return violationDetails;
                 }).toList();
-        return new ResponseEntity<>(new ResponseDTO("error", violations), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseDTO(ERROR, violations), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException badCredentialsException) {
         Map<String, Object> error = new HashMap<>();
 
-        error.put("message", badCredentialsException.getMessage());
-        error.put("status", HttpStatus.FORBIDDEN.value());
-        error.put("title", HttpStatus.FORBIDDEN);
+        error.put(MESSAGE, badCredentialsException.getMessage());
+        error.put(TITLE, HttpStatus.FORBIDDEN.value());
+        error.put(STATUS, HttpStatus.FORBIDDEN);
 
-        return new ResponseEntity<>(new ResponseDTO("error", new Object[]{error}), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new ResponseDTO(ERROR, new Object[]{error}), HttpStatus.FORBIDDEN);
     }
+
+    //org.springframework.security.access.AccessDeniedException
+    //ExpiredJwtException
+    //AuthenticationException
 }

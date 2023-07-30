@@ -1,12 +1,12 @@
 package com.danielbbontii.mentorshiptracker.utils;
 
+import com.danielbbontii.mentorshiptracker.dtos.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -16,10 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtUtils {
-
-    private JwtUtils() {
-    }
+public final class JwtUtils {
 
     @Value("${app.jwt.secret}")
     private String jwtSecretKey;
@@ -68,9 +65,9 @@ public class JwtUtils {
                 .compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateToken(String token, CustomUserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return ((username.equals(userDetails.getUsername()) || username.equals(userDetails.getEmail())) && !isTokenExpired(token));
     }
 
     private Key getSignKey() {

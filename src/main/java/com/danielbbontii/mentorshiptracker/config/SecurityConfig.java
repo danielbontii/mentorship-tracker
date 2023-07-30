@@ -1,8 +1,12 @@
 package com.danielbbontii.mentorshiptracker.config;
 
+import com.danielbbontii.mentorshiptracker.filters.JwtAuthFilter;
+import com.danielbbontii.mentorshiptracker.repositories.RoleRepository;
 import com.danielbbontii.mentorshiptracker.repositories.UserRepository;
 import com.danielbbontii.mentorshiptracker.services.UserService;
 import com.danielbbontii.mentorshiptracker.services.impl.UserServiceImpl;
+import com.danielbbontii.mentorshiptracker.utils.JwtUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +19,16 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserRepository userRepository;
+    private final JwtUtils jwtUtils;
+    private final ObjectMapper objectMapper;
+    private final RoleRepository roleRepository;
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
@@ -29,7 +37,7 @@ public class SecurityConfig {
 
     @Bean
     public UserService userService() {
-        return new UserServiceImpl(userRepository);
+        return new UserServiceImpl(userRepository, objectMapper, passwordEncoder(), roleRepository);
     }
 
     @Bean
@@ -49,15 +57,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login", "/swagger-ui/**", "/v3/api-docs/**")
+        http.authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/api/v1/auth/login", "/swagger-ui/**", "/v3/api-docs/**", "/access-denied", "/error")
                         .permitAll()
+                        .requestMatchers("/api/v1/users/admin/**").hasRole("ADMINISTRATOR")
                         .anyRequest()
                         .authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider());
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(new JwtAuthFilter(jwtUtils, userService()), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

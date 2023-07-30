@@ -35,14 +35,11 @@ public class BaseEntity {
     private Instant lastUpdatedOn;
 
     @JsonIgnore
-    @Column(insertable = false)
     private UUID lastUpdatedBy;
 
     @JsonIgnore
-    @Column(insertable = false)
     private Instant deletedOn;
 
     @JsonIgnore
-    @Column(insertable = false)
     private UUID deletedBy;
 }

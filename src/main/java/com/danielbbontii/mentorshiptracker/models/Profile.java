@@ -1,10 +1,7 @@
 package com.danielbbontii.mentorshiptracker.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -12,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@ToString
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
