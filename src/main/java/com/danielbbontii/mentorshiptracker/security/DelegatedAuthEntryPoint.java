@@ -29,22 +29,20 @@ public class DelegatedAuthEntryPoint implements AuthenticationEntryPoint {
 
         Object authError = request.getAttribute("error");
 
-        if (authError instanceof ExpiredJwtException jwtException) {
-            resolver.resolveException(request, response, null, new ExpiredJwtException(jwtException.getHeader(), jwtException.getClaims(),
-                    jwtException.getMessage()));
-            return;
+        if(authError == null) {
+            System.out.println(authException.getClass());
         }
 
-        if (authError instanceof MalformedJwtException malformedJwtException) {
-            resolver.resolveException(request, response, null, new MalformedJwtException(malformedJwtException.getMessage()));
-            return;
+        switch (authError) {
+            case ExpiredJwtException jwtException ->
+                    resolver.resolveException(request, response, null, new ExpiredJwtException(jwtException.getHeader(), jwtException.getClaims(),
+                            jwtException.getMessage()));
+            case MalformedJwtException malformedJwtException ->
+                    resolver.resolveException(request, response, null, new MalformedJwtException(malformedJwtException.getMessage()));
+            case SignatureException signatureException ->
+                    resolver.resolveException(request, response, null, new SignatureException(signatureException.getMessage()));
+            case null, default -> resolver.resolveException(request, response, null, authException);
         }
 
-        if (authError instanceof SignatureException signatureException) {
-            resolver.resolveException(request, response, null, new SignatureException(signatureException.getMessage()));
-            return;
-        }
-
-        resolver.resolveException(request, response, null, authException);
     }
 }

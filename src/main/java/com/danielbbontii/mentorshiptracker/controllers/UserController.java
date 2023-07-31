@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("v1/users/admins")
+    @PostMapping("/v1/users/admins")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO createAdmin(@Valid @RequestBody AdminCreationDTO adminCreationDTO, Authentication authentication) {
         return userService.createAdmin(adminCreationDTO, authentication);

@@ -50,8 +50,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ResponseDTO(ERROR, violations), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ExpiredJwtException.class, MalformedJwtException.class, SignatureException.class})
-    public ResponseEntity<Object> handleJwtException(Exception exception) {
+    @ExceptionHandler({ExpiredJwtException.class, MalformedJwtException.class, SignatureException.class, AccessDeniedException.class})
+    public ResponseEntity<Object> handleAuthorizationException(Exception exception) {
 
         if (exception instanceof ExpiredJwtException) {
             ERROR_DETAILS.put(MESSAGE, exception.getMessage().substring(0, 34));
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ResponseDTO(ERROR, new Object[]{ERROR_DETAILS}), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({AuthenticationException.class, AccessDeniedException.class, BadCredentialsException.class})
+    @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
     public ResponseEntity<Object> handleAuthenticationException(Exception exception) {
 
         ERROR_DETAILS.put(MESSAGE, exception.getMessage());
