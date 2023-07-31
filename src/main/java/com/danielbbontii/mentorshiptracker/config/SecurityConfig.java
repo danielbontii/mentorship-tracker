@@ -7,7 +7,7 @@ import com.danielbbontii.mentorshiptracker.services.UserService;
 import com.danielbbontii.mentorshiptracker.services.impl.UserServiceImpl;
 import com.danielbbontii.mentorshiptracker.utils.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,17 +18,30 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
     private final ObjectMapper objectMapper;
     private final RoleRepository roleRepository;
+    AuthenticationEntryPoint authEntryPoint;
+
+    public SecurityConfig(UserRepository userRepository,
+                          JwtUtils jwtUtils,
+                          ObjectMapper objectMapper,
+                          RoleRepository roleRepository,
+                          @Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authEntryPoint) {
+        this.userRepository = userRepository;
+        this.jwtUtils = jwtUtils;
+        this.objectMapper = objectMapper;
+        this.roleRepository = roleRepository;
+        this.authEntryPoint = authEntryPoint;
+    }
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
@@ -58,12 +71,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/v1/auth/login", "/swagger-ui/**", "/v3/api-docs/**", "/access-denied", "/error")
+                        .requestMatchers("/api/v1/auth/login", "/swagger-ui/**", "/v3/api-docs/**")
                         .permitAll()
                         .requestMatchers("/api/v1/users/admin/**").hasRole("ADMINISTRATOR")
                         .anyRequest()
                         .authenticated()
                 )
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
