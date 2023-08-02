@@ -14,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -50,8 +51,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ResponseDTO(ERROR, violations), HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({ExpiredJwtException.class, MalformedJwtException.class, SignatureException.class, AccessDeniedException.class})
-    public ResponseEntity<Object> handleAuthorizationException(Exception exception) {
+    public ResponseEntity<ResponseDTO> handleAuthorizationException(Exception exception) {
 
         if (exception instanceof ExpiredJwtException) {
             ERROR_DETAILS.put(MESSAGE, exception.getMessage().substring(0, 34));
@@ -65,13 +67,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
-    public ResponseEntity<Object> handleAuthenticationException(Exception exception) {
+    public ResponseEntity<ResponseDTO> handleAuthenticationException(Exception exception) {
 
         ERROR_DETAILS.put(MESSAGE, exception.getMessage());
         ERROR_DETAILS.put(TITLE, HttpStatus.FORBIDDEN.value());
         ERROR_DETAILS.put(STATUS, HttpStatus.FORBIDDEN);
 
         return new ResponseEntity<>(new ResponseDTO(ERROR, new Object[]{ERROR_DETAILS}), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<ResponseDTO> handleUncaughtException(Exception exception) {
+
+        ERROR_DETAILS.put(MESSAGE, "Something went wrong. Please try again later");
+        ERROR_DETAILS.put(TITLE, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ERROR_DETAILS.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<>(new ResponseDTO(ERROR, new Object[]{ERROR_DETAILS}), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
