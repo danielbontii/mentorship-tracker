@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         //See if I can do this with AOP later
 
-        if (authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated()) {
             CustomUserDetails authUser = (CustomUserDetails) authentication.getPrincipal();
             newAdmin.setCreatedBy(authUser.getUserId());
             newAdmin.setLastUpdatedBy(authUser.getUserId());

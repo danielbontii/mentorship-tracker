@@ -1,12 +1,15 @@
 package com.danielbbontii.mentorshiptracker.dtos;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
 public class AdminCreationDTO extends BaseUserCreationDTO {
+
+    @Override
+    public String toString() {
+        return "AdminCreationDTO(" +
+                "firstname='" + super.getFirstname() + '\'' +
+                ", lastname='" + super.getLastname() + '\'' +
+                ", email='" + super.getEmail() + '\'' +
+                ", username='" + super.getUsername() + '\'' +
+                ')';
+    }
 
 }
